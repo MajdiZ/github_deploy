@@ -1,0 +1,35 @@
+<?php
+/**
+ * Install file for github_deploy module.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function github_deploy_requirements($phase) {
+  $t = get_t();
+  $requirements = array();
+  $gitphp_library = libraries_load('gitphp');
+  switch($phase){
+    case 'runtime':
+      if (!$gitphp_library['loaded']) {
+        $requirements['github_deploy'] = array(
+          'title' => $t('Git.php library'),
+          'value' => $t('Not installed'),
+          'description' => $t('The Git.php library could not be loaded. Please install <a href="@url" target="_blank">Git.php library</a>.', array('@url' => GITHUB_DEPLOY_GIT_PHP_LIBRARY_URL)),
+          'severity' => REQUIREMENT_ERROR,
+        );
+      }
+      else {
+        $requirements['github_deploy'] = array(
+          'title' => $t('Git.php library'),
+          'value' => $t('Installed'),
+          'description' => $t('The Git.php library installed'),
+          'severity' => REQUIREMENT_OK,
+        );
+      }
+      break;
+  }
+  return $requirements;
+}
+
