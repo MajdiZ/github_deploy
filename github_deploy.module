@@ -1,0 +1,107 @@
+<?php
+
+/**
+ * @file
+ * Github deploy main functionality.
+ *
+ */
+
+define('GITHUB_DEPLOY_GIT_PHP_LIBRARY_URL', 'https://github.com/kbjr/Git.php.git');
+define('GITHUB_DEPLOY_GIT_PHP_LIBRARY_URL_DOWNLOAD', 'https://github.com/kbjr/Git.php/archive/master.zip');
+define('GITHUB_DEPLOY_ADMIN_MENU_PATH', 'admin/config/development/github_deploy');
+
+/**
+ * Implements hook_menu().
+ */
+function github_deploy_menu() {
+  $items = array();
+
+  $items['github-deploy/pull'] = array(
+    'title' => 'Github Deploy callback',
+    'page callback' => 'github_deploy_callback_pull',
+    'type' => MENU_CALLBACK,
+    'access callback' => TRUE,
+    'file' => 'github_deploy.pages.inc',
+  );
+
+  $items[GITHUB_DEPLOY_ADMIN_MENU_PATH] = array(
+    'title' => 'Github deploy',
+    'description' => 'Deploy github branch',
+    'page callback' => '',
+    'page arguments' => array(),
+    'access arguments' => array('administer github deploy'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items[GITHUB_DEPLOY_ADMIN_MENU_PATH . '/status'] = array(
+    'title' => 'Github deploy status',
+    'description' => 'deploy status.',
+    'page callback' => '',
+    'page arguments' => array(),
+    'access arguments' => array('administer github deploy'),
+    'weight' => 0,
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'file' => 'github_deploy.admin.inc',
+  );
+
+  $items[GITHUB_DEPLOY_ADMIN_MENU_PATH . '/settings'] = array(
+    'title' => 'Restore',
+    'description' => 'Settings for Github deploy.',
+    'page callback' => '',
+    'page arguments' => array(),
+    'access arguments' => array('administer github deploy'),
+    'weight' => 1,
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'github_deploy.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Access callback to validate github callback
+ * @return bool TRUE if secret match otherwise FALSE
+ */
+function github_deploy_access_callback_pull(){
+  // TODO bind $secret with admin interface and installation
+  $secret = 'secret';
+  list($hash_algo, $signature) = explode('=', $_SERVER['HTTP_X_HUB_SIGNATURE']);
+  $payload = file_get_contents('php://input');
+  $compute = hash_hmac($hash_algo, $payload, $secret);
+  $valid = hash_equals($compute, $signature);
+  return $valid;
+}
+
+
+/**
+ * Implements hook_libraries_info().
+ */
+function github_deploy_libraries_info() {
+
+  $libraries['gitphp'] = array(
+    'name' => 'Git.php',
+    'vendor url' => GITHUB_DEPLOY_GIT_PHP_LIBRARY_URL,
+    'download url' => GITHUB_DEPLOY_GIT_PHP_LIBRARY_URL_DOWNLOAD,
+    'version' => '0.x',
+    'files' => array(
+      'php' => array(
+        'Git.php'
+      ),
+    ),
+  );
+
+  return $libraries;
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function github_deploy_permission() {
+  return array(
+    'administer github deploy' => array(
+      'title' => t('Administer Github deploy'),
+      'description' => t('Administer Github deploy tasks and settings.'),
+    ),
+  );
+}

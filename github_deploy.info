@@ -1,0 +1,5 @@
+name = Github deploy
+description = Deploy github repository branch based on github callback.
+package = Development
+dependencies[] = libraries (>=7.x-2.0)
+core = 7.x
