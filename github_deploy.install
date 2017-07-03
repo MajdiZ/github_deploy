@@ -41,14 +41,16 @@ function github_deploy_install() {
   variable_set('github_deploy_admin_settings_secure_method', 'secret_token');
 
   // Whitelist github's ip.
+  // https://help.github.com/articles/github-s-ip-addresses whitelist ips.
+  // During testing i found range is larger than 20.
   variable_set('github_deploy_whitelist_githubs_ip', array(
     'range-1' => array(
       'from' => '192.30.252.0',
-      'to' => '192.30.252.22',
+      'to' => '192.30.252.255',
     ),
     'range-2' => array(
       'from' => '185.199.108.0',
-      'to' => '185.199.108.22',
+      'to' => '185.199.108.255',
     ),
   ));
 
