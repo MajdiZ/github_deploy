@@ -19,7 +19,7 @@ function github_deploy_menu() {
     'title' => 'Github Deploy callback',
     'page callback' => 'github_deploy_callback_pull',
     'type' => MENU_CALLBACK,
-    'access callback' => TRUE,
+    'access callback' => 'github_deploy_access_callback_pull',
     'file' => 'github_deploy.pages.inc',
   );
 
@@ -64,13 +64,13 @@ function github_deploy_access_callback_pull() {
 
   if ($access_method == 'whitelist_githubs_ip' || $access_method == 'both_methods') {
     // @TODO Check what we can do if Drupal is behind a reverse proxy.
-    $requester_ip = ip_address();
+    $requester_ip = ip2long(ip_address());
     $github_ips_range = variable_get('github_deploy_whitelist_githubs_ip');
 
-    if (($requester_ip <= $github_ips_range['range-1']['to']
-        && $github_ips_range['range-1']['from'] <= $requester_ip)
-      || ($requester_ip <= $github_ips_range['range-2']['to']
-        && $github_ips_range['range-2']['from'] <= $requester_ip)) {
+    if (($requester_ip <= ip2long($github_ips_range['range-1']['to'])
+        && ip2long($github_ips_range['range-1']['from']) <= $requester_ip)
+      || ($requester_ip <= ip2long($github_ips_range['range-2']['to'])
+        && ip2long($github_ips_range['range-2']['from']) <= $requester_ip)) {
       $access_whitelist_githubs_ip = TRUE;
     }
 
