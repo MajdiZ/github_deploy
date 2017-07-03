@@ -14,11 +14,30 @@
 function github_deploy_admin_settings() {
   $form = array();
 
+  // Load library wrapper.
+  module_load_include('inc', 'github_deploy', 'github_deploy.git');
+
+  // Check if current site has in git repository.
+  if (!github_deploy_git_is_repository()) {
+    $form['information'] = array(
+      '#markup' => t("You don't have any git repository, Please Initializing one."),
+    );
+    return $form;
+  }
+
   $form['github_deploy'] = array(
     '#type' => 'fieldset',
     '#title' => t('Github deploy settings'),
     '#collapsible' => FALSE,
     '#weight' => 0,
+  );
+
+  // Get active branch name.
+  $active_branch = github_deploy_git_get_active_branch();
+  $form['github_deploy']['repository'] = array(
+    '#markup' => t('Your current branch is <strong>@branch</strong>', array(
+      '@branch' => $active_branch,
+    )),
   );
 
   $form['github_deploy']['github_deploy_admin_settings_secure_method'] = array(
