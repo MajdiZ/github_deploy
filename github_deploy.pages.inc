@@ -9,5 +9,5 @@
  * Menu callback for github-deploy/pull.
  */
 function github_deploy_callback_pull() {
-  watchdog('Github deploy', 'Github hook executed Pull', WATCHDOG_NOTICE);
+  watchdog('Github deploy', 'Github hook executed Pull', array(), WATCHDOG_NOTICE);
 }
