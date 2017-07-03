@@ -33,3 +33,33 @@ function github_deploy_requirements($phase) {
   return $requirements;
 }
 
+/**
+ * Implements hook_install().
+ */
+function github_deploy_install() {
+  // Set default variables.
+  variable_set('github_deploy_admin_settings_secure_method', 'secret_token');
+
+  // Whitelist github's ip.
+  variable_set('github_deploy_whitelist_githubs_ip', array(
+    'range-1' => array(
+      'from' => '192.30.252.0',
+      'to' => '192.30.252.22',
+    ),
+    'range-2' => array(
+      'from' => '185.199.108.0',
+      'to' => '185.199.108.22',
+    ),
+  ));
+
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function github_deploy_uninstall() {
+
+  variable_del('github_deploy_admin_settings_secure_method');
+  variable_del('github_deploy_admin_settings_secret');
+}
+
