@@ -63,5 +63,6 @@ function github_deploy_uninstall() {
 
   variable_del('github_deploy_admin_settings_secure_method');
   variable_del('github_deploy_admin_settings_secret');
+  variable_get('github_deploy_admin_settings_origin_name');
 }
 
