@@ -81,3 +81,36 @@ function github_deploy_git_get_origins_name($path = DRUPAL_ROOT) {
     return FALSE;
   }
 }
+
+/**
+ * Execute Pull deploy action.
+ *
+ * @param string $origin
+ *    Origin name.
+ * @param string $path
+ *    repository path, default is DRUPAL_ROOT.
+ *
+ * @return array|bool
+ *    array of command => result or FALSE on error.
+ */
+function github_deploy_git_execute_pull_deploy($origin, $path = DRUPAL_ROOT) {
+  $result = array();
+  $commands = array(
+    'fetch' => 'fetch --all',
+    'reset' => 'reset --hard ' . $origin,
+    'pull' => 'pull',
+  );
+
+  try {
+    $repository = Git::open($path);
+
+    foreach ($commands as $command_name => $command) {
+      $result[$command_name] = $repository->run($command);
+    }
+
+    return $result;
+  }
+  catch (Exception $exception) {
+    return FALSE;
+  }
+}
