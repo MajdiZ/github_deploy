@@ -52,3 +52,32 @@ function github_deploy_git_get_active_branch($path = DRUPAL_ROOT, $keep_asterisk
   }
 
 }
+
+/**
+ * Return list of origin name and urls.
+ *
+ * @param string $path
+ *     repository path, default is DRUPAL_ROOT.
+ *
+ * @return array|bool
+ *    Array of origins => names, or FALSE.
+ */
+function github_deploy_git_get_origins_name($path = DRUPAL_ROOT) {
+  $origins = array();
+  try {
+    $repository = Git::open($path);
+    $result = $repository->run('remote');
+    // Always empty line at the end.
+    $origins_names = explode("\n", $result);
+    array_pop($origins_names);
+
+    // Prepare array of $origins => Remotes.
+    foreach ($origins_names as $name) {
+      $origins[$name] = $repository->run('remote get-url ' . $name);
+    }
+    return $origins;
+  }
+  catch (Exception $exception) {
+    return FALSE;
+  }
+}

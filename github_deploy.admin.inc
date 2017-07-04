@@ -40,6 +40,18 @@ function github_deploy_admin_settings() {
     )),
   );
 
+  // Get origins name.
+  $origins = github_deploy_git_get_origins_name();
+
+  $form['github_deploy']['github_deploy_admin_settings_origin_name'] = array(
+    '#type' => 'select',
+    '#title' => t('Origin name'),
+    '#description' => t('Select origin name for repository.'),
+    '#options' => $origins,
+    '#default_value' => variable_get('github_deploy_admin_settings_origin_name'),
+    '#required' => TRUE,
+  );
+
   $form['github_deploy']['github_deploy_admin_settings_secure_method'] = array(
     '#type' => 'select',
     '#title' => t('Secure method'),
