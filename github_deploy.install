@@ -39,6 +39,7 @@ function github_deploy_requirements($phase) {
 function github_deploy_install() {
   // Set default variables.
   variable_set('github_deploy_admin_settings_secure_method', 'secret_token');
+  variable_set('github_deploy_admin_features_revert', 0);
 
   // Whitelist github's ip.
   // https://help.github.com/articles/github-s-ip-addresses whitelist ips.
@@ -60,9 +61,10 @@ function github_deploy_install() {
  * Implements hook_uninstall().
  */
 function github_deploy_uninstall() {
-
+  // Delete all variables on uninstall.
   variable_del('github_deploy_admin_settings_secure_method');
   variable_del('github_deploy_admin_settings_secret');
-  variable_get('github_deploy_admin_settings_origin_name');
+  variable_del('github_deploy_admin_settings_origin_name');
+  variable_del('github_deploy_admin_clear_cache');
+  variable_del('github_deploy_admin_features_revert');
 }
-

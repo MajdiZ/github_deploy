@@ -87,6 +87,22 @@ function github_deploy_admin_settings() {
     ),
   );
 
+  $form['github_deploy']['github_deploy_admin_clear_cache'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Clear cache.'),
+    '#description' => t('Clear drupal cache after deploy callback completed.'),
+    '#default_value' => variable_get('github_deploy_admin_clear_cache', 1),
+  );
+
+  if (module_exists('features')) {
+    $form['github_deploy']['github_deploy_admin_features_revert'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Revert features.'),
+      '#description' => t('Revert all features.'),
+      '#default_value' => variable_get('github_deploy_admin_features_revert', 0),
+    );
+  }
+
   return system_settings_form($form);
 }
 

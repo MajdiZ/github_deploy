@@ -14,9 +14,24 @@ function github_deploy_callback_pull() {
 
   $origin = variable_get('github_deploy_admin_settings_origin_name');
   $result = github_deploy_git_execute_pull_deploy($origin);
+  if ($result) {
+
+    if (variable_get('github_deploy_admin_clear_cache')) {
+      // Clear cache.
+      drupal_flush_all_caches();
+    }
+
+    if (variable_get('github_deploy_admin_features_revert')) {
+      if (module_exists('features')) {
+        // Revert all features.
+        features_revert();
+      }
+    }
+
+  }
 
   watchdog('Github deploy', '<pre>Output: @Output</pre>', array(
     '@Output' => print_r($result, TRUE),
   ), WATCHDOG_NOTICE);
-  
+
 }
