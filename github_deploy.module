@@ -51,10 +51,13 @@ function github_deploy_access_callback_pull() {
   if ($access_method == 'secret_token' || $access_method == 'both_methods') {
     $secret = variable_get('github_deploy_admin_settings_secret');
 
-    list($hash_algo, $signature) = explode('=', $_SERVER['HTTP_X_HUB_SIGNATURE']);
-    $payload = file_get_contents('php://input');
-    $compute = hash_hmac($hash_algo, $payload, $secret);
-    $access_secret_token = hash_equals($compute, $signature);
+    // Be sure security token is set in github
+    if (!empty($_SERVER['HTTP_X_HUB_SIGNATURE'])) {
+      list($hash_algo, $signature) = explode('=', $_SERVER['HTTP_X_HUB_SIGNATURE']);
+      $payload = file_get_contents('php://input');
+      $compute = hash_hmac($hash_algo, $payload, $secret);
+      $access_secret_token = hash_equals($compute, $signature);
+    }
 
     // If method only secret_token return result.
     if ($access_method == 'secret_token') {
