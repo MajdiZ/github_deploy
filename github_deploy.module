@@ -115,3 +115,16 @@ function github_deploy_permission() {
     ),
   );
 }
+
+function github_deploy_github_deploy_deployment_start(){
+  watchdog('Github deploy', 'Start_hook', array(), WATCHDOG_NOTICE);
+}
+function github_deploy_github_deploy_deployment_completed($result){
+  watchdog('Github deploy', '<pre>Completed: @Output</pre>', array(
+    '@Output' => print_r($result, TRUE),
+  ), WATCHDOG_NOTICE);
+}
+
+function github_deploy_github_deploy_deployment_failed(){
+  watchdog('Github deploy', 'Failed_hook', array(), WATCHDOG_NOTICE);
+}
