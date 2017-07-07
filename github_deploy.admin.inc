@@ -14,6 +14,16 @@
 function github_deploy_admin_settings() {
   $form = array();
 
+  // Be sure the library is loaded.
+  $gitphp_library = libraries_load('gitphp');
+  if (!$gitphp_library || !$gitphp_library['loaded']) {
+    $form['information'] = array(
+      '#markup' => t('The Git.php library could not be loaded. Please install <a href="@url" target="_blank">Git.php library</a>.',
+        array('@url' => GITHUB_DEPLOY_GIT_PHP_LIBRARY_URL)),
+    );
+    return $form;
+  }
+
   // Load library wrapper.
   module_load_include('inc', 'github_deploy', 'github_deploy.git');
 

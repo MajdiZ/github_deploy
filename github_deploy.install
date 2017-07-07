@@ -12,20 +12,20 @@ function github_deploy_requirements($phase) {
   $gitphp_library = libraries_load('gitphp');
   switch($phase){
     case 'runtime':
-      if (!$gitphp_library['loaded']) {
-        $requirements['github_deploy'] = array(
-          'title' => $t('Git.php library'),
-          'value' => $t('Not installed'),
-          'description' => $t('The Git.php library could not be loaded. Please install <a href="@url" target="_blank">Git.php library</a>.', array('@url' => GITHUB_DEPLOY_GIT_PHP_LIBRARY_URL)),
-          'severity' => REQUIREMENT_ERROR,
-        );
-      }
-      else {
+      if ($gitphp_library && $gitphp_library['loaded']) {
         $requirements['github_deploy'] = array(
           'title' => $t('Git.php library'),
           'value' => $t('Installed'),
           'description' => $t('The Git.php library installed'),
           'severity' => REQUIREMENT_OK,
+        );
+      }
+      else {
+        $requirements['github_deploy'] = array(
+          'title' => $t('Git.php library'),
+          'value' => $t('Not installed'),
+          'description' => $t('The Git.php library could not be loaded. Please install <a href="@url" target="_blank">Git.php library</a>.', array('@url' => GITHUB_DEPLOY_GIT_PHP_LIBRARY_URL)),
+          'severity' => REQUIREMENT_ERROR,
         );
       }
       break;
