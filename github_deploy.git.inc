@@ -9,25 +9,25 @@
 libraries_load('gitphp');
 
 /**
- * Check if provided path is git repository.
+ * Initialize repository object.
  *
  * @param string $path
- *    The path to check, default is DRUPAL_ROOT.
+ *    Root of repository, default is DRUPAL_ROOT.
  *
- * @return bool
- *    TRUE if path is git repository otherwise FALSE.
+ * @return bool|object
+ *    return FALSE on failure or repository object.
  */
-function github_deploy_git_is_repository($path = DRUPAL_ROOT) {
+function github_deploy_git_init_object($path = DRUPAL_ROOT) {
+  $bin_path = variable_get('github_deploy_admin_settings_git_path', GITHUB_DEPLOY_DEFAULT_GIT_PATH);
+  Git::set_bin($bin_path);
 
   try {
-    Git::open($path);
-    $is_repository = TRUE;
+    $repository = Git::open($path);
+    return $repository;
   }
   catch (Exception $exception) {
-    $is_repository = FALSE;
+    return FALSE;
   }
-
-  return $is_repository;
 }
 
 /**
@@ -42,15 +42,10 @@ function github_deploy_git_is_repository($path = DRUPAL_ROOT) {
  *    False or active branch name.
  */
 function github_deploy_git_get_active_branch($path = DRUPAL_ROOT, $keep_asterisk = FALSE) {
-
-  try {
-    $repository = Git::open($path);
+  if ($repository = github_deploy_git_init_object($path)) {
     return $repository->active_branch($keep_asterisk);
   }
-  catch (Exception $exception) {
-    return FALSE;
-  }
-
+  return FALSE;
 }
 
 /**
@@ -64,7 +59,8 @@ function github_deploy_git_get_active_branch($path = DRUPAL_ROOT, $keep_asterisk
  */
 function github_deploy_git_get_origins_name($path = DRUPAL_ROOT) {
   $origins = array();
-  try {
+
+  if ($repository = github_deploy_git_init_object($path)) {
     $repository = Git::open($path);
     $result = $repository->run('remote');
     // Always empty line at the end.
@@ -77,7 +73,7 @@ function github_deploy_git_get_origins_name($path = DRUPAL_ROOT) {
     }
     return $origins;
   }
-  catch (Exception $exception) {
+  else {
     return FALSE;
   }
 }
@@ -101,16 +97,15 @@ function github_deploy_git_execute_pull_deploy($origin, $path = DRUPAL_ROOT) {
     'pull' => 'pull',
   );
 
-  try {
+  if ($repository = github_deploy_git_init_object($path)) {
     $repository = Git::open($path);
 
     foreach ($commands as $command_name => $command) {
       $result[$command_name] = $repository->run($command);
     }
-
     return $result;
   }
-  catch (Exception $exception) {
+  else {
     return FALSE;
   }
 }

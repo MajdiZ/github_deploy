@@ -28,7 +28,7 @@ function github_deploy_admin_settings() {
   module_load_include('inc', 'github_deploy', 'github_deploy.git');
 
   // Check if current site has in git repository.
-  if (!github_deploy_git_is_repository()) {
+  if (github_deploy_git_init_object()) {
     $form['information'] = array(
       '#markup' => t("You don't have any git repository, Please Initializing one."),
     );
@@ -58,7 +58,7 @@ function github_deploy_admin_settings() {
       '@path' => '/usr/bin/git',
       '@windows' => 'git',
     )),
-    '#default_value' => variable_get('github_deploy_admin_settings_git_path'),
+    '#default_value' => variable_get('github_deploy_admin_settings_git_path', GITHUB_DEPLOY_DEFAULT_GIT_PATH),
     '#required' => TRUE,
   );
 
