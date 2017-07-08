@@ -19,6 +19,7 @@ libraries_load('gitphp');
  */
 function github_deploy_git_init_object($path = DRUPAL_ROOT) {
   $bin_path = variable_get('github_deploy_admin_settings_git_path', GITHUB_DEPLOY_DEFAULT_GIT_PATH);
+
   Git::set_bin($bin_path);
 
   try {
@@ -108,4 +109,43 @@ function github_deploy_git_execute_pull_deploy($origin, $path = DRUPAL_ROOT) {
   else {
     return FALSE;
   }
+}
+
+/**
+ * Check setup status.
+ *
+ * @param string $path
+ *    repository path, default is DRUPAL_ROOT.
+ *
+ * @return bool
+ *    TRUE if check completed otherwise FALSE.
+ */
+function github_deploy_git_check_setup($path = DRUPAL_ROOT) {
+
+  if ($repository = github_deploy_git_init_object($path)) {
+    // Repository exist.
+    if ($repository->test_git()) {
+      // Git installed.
+      if (github_deploy_git_get_active_branch($path)) {
+        // Active branch found.
+        if (github_deploy_git_get_origins_name($path)) {
+          // Origin found.
+          return TRUE;
+        }
+        else {
+          drupal_set_message(t("You need to have at least 1 remote origin."), 'warning');
+        }
+      }
+      else {
+        drupal_set_message(t("You need to have at least 1 branch."), 'warning');
+      }
+    }
+    else {
+      drupal_set_message(t("Git is not installed or not exported to path."), 'warning');
+    }
+  }
+  else {
+    drupal_set_message(t("Can't find repository in project root, initialize one."), 'warning');
+  }
+  return FALSE;
 }

@@ -8,7 +8,7 @@
 define('GITHUB_DEPLOY_GIT_PHP_LIBRARY_URL', 'https://github.com/kbjr/Git.php.git');
 define('GITHUB_DEPLOY_GIT_PHP_LIBRARY_URL_DOWNLOAD', 'https://github.com/kbjr/Git.php/archive/master.zip');
 define('GITHUB_DEPLOY_ADMIN_MENU_PATH', 'admin/config/development/github-deploy');
-define('GITHUB_DEPLOY_DEFAULT_GIT_PATH', 'https://github.com/kbjr/Git.php.git');
+define('GITHUB_DEPLOY_DEFAULT_GIT_PATH', '/usr/bin/git');
 
 /**
  * Implements hook_menu().

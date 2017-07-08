@@ -27,14 +27,6 @@ function github_deploy_admin_settings() {
   // Load library wrapper.
   module_load_include('inc', 'github_deploy', 'github_deploy.git');
 
-  // Check if current site has in git repository.
-  if (github_deploy_git_init_object()) {
-    $form['information'] = array(
-      '#markup' => t("You don't have any git repository, Please Initializing one."),
-    );
-    return $form;
-  }
-
   $form['github_deploy'] = array(
     '#type' => 'fieldset',
     '#title' => t('Github deploy settings'),
@@ -42,13 +34,7 @@ function github_deploy_admin_settings() {
     '#weight' => 0,
   );
 
-  // Get active branch name.
-  $active_branch = github_deploy_git_get_active_branch();
-  $form['github_deploy']['repository'] = array(
-    '#markup' => t('Your current branch is <strong>@branch</strong>', array(
-      '@branch' => $active_branch,
-    )),
-  );
+  $git_path = variable_get('github_deploy_admin_settings_git_path', GITHUB_DEPLOY_DEFAULT_GIT_PATH);
 
   $form['github_deploy']['github_deploy_admin_settings_git_path'] = array(
     '#type' => 'textfield',
@@ -58,8 +44,20 @@ function github_deploy_admin_settings() {
       '@path' => '/usr/bin/git',
       '@windows' => 'git',
     )),
-    '#default_value' => variable_get('github_deploy_admin_settings_git_path', GITHUB_DEPLOY_DEFAULT_GIT_PATH),
+    '#default_value' => $git_path,
     '#required' => TRUE,
+  );
+
+  if (!github_deploy_git_check_setup()) {
+    return system_settings_form($form);
+  }
+
+  // Get active branch name.
+  $active_branch = github_deploy_git_get_active_branch();
+  $form['github_deploy']['repository'] = array(
+    '#markup' => t('Your current branch is <strong>@branch</strong>', array(
+      '@branch' => $active_branch,
+    )),
   );
 
   // Get origins name.
