@@ -56,7 +56,7 @@ function github_deploy_admin_settings() {
     '#description' => t('System path to git bin default <code>@path</code>', array(
       '@path' => '/usr/bin/git',
     )),
-    '#default_value' => variable_get('github_deploy_admin_settings_git_path', '/usr/bin/git'),
+    '#default_value' => variable_get('github_deploy_admin_settings_git_path'),
     '#required' => TRUE,
   );
 
