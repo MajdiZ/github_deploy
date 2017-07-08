@@ -62,20 +62,22 @@ function github_deploy_admin_settings() {
 
   // Get origins name.
   $origins = github_deploy_git_get_origins_name();
+  if ($origins) {
+    $form['github_deploy']['github_deploy_admin_settings_origin_name'] = array(
+      '#type' => 'select',
+      '#title' => t('Origin name'),
+      '#description' => t('Select origin name for repository.'),
+      '#options' => $origins,
+      '#default_value' => variable_get('github_deploy_admin_settings_origin_name'),
+      '#required' => TRUE,
+    );
+  }
 
-  $form['github_deploy']['github_deploy_admin_settings_origin_name'] = array(
-    '#type' => 'select',
-    '#title' => t('Origin name'),
-    '#description' => t('Select origin name for repository.'),
-    '#options' => $origins,
-    '#default_value' => variable_get('github_deploy_admin_settings_origin_name'),
-    '#required' => TRUE,
-  );
 
   $form['github_deploy']['github_deploy_admin_settings_secure_method'] = array(
     '#type' => 'select',
     '#title' => t('Secure method'),
-    '#description' => t('Method to secure Github deploy callback'),
+    '#description' => t('Method to secure Github deploy callback.'),
     '#options' => array(
       'secret_token' => t('Secret token'),
       'whitelist_githubs_ip' => t("Whitelist GitHub's IP"),
@@ -88,7 +90,7 @@ function github_deploy_admin_settings() {
   $form['github_deploy']['github_deploy_admin_settings_secret'] = array(
     '#type' => 'textfield',
     '#title' => t('Secret<span class="form-required"> *</span>'),
-    '#description' => t('Secret you want to use'),
+    '#description' => t('Secret you want to use.'),
     '#default_value' => variable_get('github_deploy_admin_settings_secret', ''),
     '#element_validate' => array(0 => 'github_deploy_states_require_validate'),
     '#states' => array(
