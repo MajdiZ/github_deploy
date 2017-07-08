@@ -10,7 +10,7 @@ function github_deploy_requirements($phase) {
   $t = get_t();
   $requirements = array();
   $gitphp_library = libraries_load('gitphp');
-  switch($phase){
+  switch ($phase) {
     case 'runtime':
       if ($gitphp_library && $gitphp_library['loaded']) {
         $requirements['github_deploy'] = array(
@@ -67,4 +67,5 @@ function github_deploy_uninstall() {
   variable_del('github_deploy_admin_settings_origin_name');
   variable_del('github_deploy_admin_clear_cache');
   variable_del('github_deploy_admin_features_revert');
+  variable_del('github_deploy_admin_settings_git_path');
 }

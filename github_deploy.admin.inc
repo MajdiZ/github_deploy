@@ -50,6 +50,16 @@ function github_deploy_admin_settings() {
     )),
   );
 
+  $form['github_deploy']['github_deploy_admin_settings_git_path'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Git bin'),
+    '#description' => t('System path to git bin default <code>@path</code>', array(
+      '@path' => '/usr/bin/git',
+    )),
+    '#default_value' => variable_get('github_deploy_admin_settings_git_path', '/usr/bin/git'),
+    '#required' => TRUE,
+  );
+
   // Get origins name.
   $origins = github_deploy_git_get_origins_name();
 
