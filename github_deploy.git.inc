@@ -63,14 +63,19 @@ function github_deploy_git_get_origins_name($path = DRUPAL_ROOT) {
 
   if ($repository = github_deploy_git_init_object($path)) {
     $repository = Git::open($path);
-    $result = $repository->run('remote');
+    $result = $repository->run('remote --verbose');
     // Always empty line at the end.
-    $origins_names = explode("\n", $result);
-    array_pop($origins_names);
+    $origins_remote = explode("\n", $result);
+    array_pop($origins_remote);
 
     // Prepare array of $origins => Remotes.
-    foreach ($origins_names as $name) {
-      $origins[$name] = $repository->run('remote get-url ' . $name);
+    foreach ($origins_remote as $origin) {
+      $origin = preg_split('/\s+/', $origin);
+
+      if ($origin[2] == '(fetch)') {
+        $origins[$origin[0]] = $origin[0] . ' - ' . $origin[1];
+      }
+
     }
     return $origins;
   }
