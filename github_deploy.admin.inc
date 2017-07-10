@@ -13,6 +13,25 @@
  */
 function github_deploy_admin_settings() {
   $form = array();
+  $form['github_deploy'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Github deploy settings'),
+    '#collapsible' => FALSE,
+    '#weight' => 2,
+  );
+
+  $form['github_deploy']['github_deploy_admin_settings_git_path'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Git bin'),
+    '#description' => t('System path to git bin default <code>@path</code>,
+    for windows mode set value as <code>@windows</code>.', array(
+      '@path' => '/usr/bin/git',
+      '@windows' => 'git',
+    )),
+    '#default_value' => variable_get('github_deploy_admin_settings_git_path', GITHUB_DEPLOY_DEFAULT_GIT_PATH),
+    '#required' => TRUE,
+    '#weight' => 1,
+  );
 
   // Be sure the library is loaded.
   $gitphp_library = libraries_load('gitphp');
@@ -20,33 +39,16 @@ function github_deploy_admin_settings() {
     $form['information'] = array(
       '#markup' => t('The Git.php library could not be loaded. Please install <a href="@url" target="_blank">Git.php library</a>.',
         array('@url' => GITHUB_DEPLOY_GIT_PHP_LIBRARY_URL)),
+      '#weight' => 0,
     );
+
+
     return $form;
   }
 
   // Load library wrapper.
   module_load_include('inc', 'github_deploy', 'github_deploy.git');
 
-  $form['github_deploy'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Github deploy settings'),
-    '#collapsible' => FALSE,
-    '#weight' => 0,
-  );
-
-  $git_path = variable_get('github_deploy_admin_settings_git_path', GITHUB_DEPLOY_DEFAULT_GIT_PATH);
-
-  $form['github_deploy']['github_deploy_admin_settings_git_path'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Git bin'),
-    '#description' => t('System path to git bin default <code>@path</code>, 
-    for windows mode set value as <code>@windows</code>.', array(
-      '@path' => '/usr/bin/git',
-      '@windows' => 'git',
-    )),
-    '#default_value' => $git_path,
-    '#required' => TRUE,
-  );
 
   if (!github_deploy_git_check_setup()) {
     return system_settings_form($form);
@@ -80,7 +82,7 @@ function github_deploy_admin_settings() {
     '#description' => t('Method to secure Github deploy callback.'),
     '#options' => array(
       'secret_token' => t('Secret token'),
-      'whitelist_githubs_ip' => t("Whitelist GitHub's IP"),
+      'whitelist_githubs_ip' => t('Whitelist GitHub\'s IP'),
       'both_methods' => t('Both methods'),
     ),
     '#default_value' => variable_get('github_deploy_admin_settings_secure_method'),
@@ -89,7 +91,7 @@ function github_deploy_admin_settings() {
 
   $form['github_deploy']['github_deploy_admin_settings_secret'] = array(
     '#type' => 'textfield',
-    '#title' => t('Secret<span class="form-required"> *</span>'),
+    '#title' => t('Secret'),
     '#description' => t('Secret you want to use.'),
     '#default_value' => variable_get('github_deploy_admin_settings_secret', ''),
     '#element_validate' => array(0 => 'github_deploy_states_require_validate'),
@@ -111,7 +113,7 @@ function github_deploy_admin_settings() {
 
   $form['github_deploy']['github_deploy_admin_clear_cache'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Clear cache.'),
+    '#title' => t('Clear cache'),
     '#description' => t('Clear drupal cache after deploy callback completed.'),
     '#default_value' => variable_get('github_deploy_admin_clear_cache', 1),
   );
@@ -119,7 +121,7 @@ function github_deploy_admin_settings() {
   if (module_exists('features')) {
     $form['github_deploy']['github_deploy_admin_features_revert'] = array(
       '#type' => 'checkbox',
-      '#title' => t('Revert features.'),
+      '#title' => t('Revert features'),
       '#description' => t('Revert all features.'),
       '#default_value' => variable_get('github_deploy_admin_features_revert', 0),
     );

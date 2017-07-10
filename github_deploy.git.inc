@@ -135,6 +135,8 @@ function github_deploy_git_check_setup($path = DRUPAL_ROOT) {
         // Active branch found.
         if (github_deploy_git_get_origins_name($path)) {
           // Origin found.
+          // Let's clean up the messages.
+          drupal_get_messages('warning');
           return TRUE;
         }
         else {
