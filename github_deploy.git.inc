@@ -126,7 +126,6 @@ function github_deploy_git_execute_pull_deploy($origin, $path = DRUPAL_ROOT) {
  *    TRUE if check completed otherwise FALSE.
  */
 function github_deploy_git_check_setup($path = DRUPAL_ROOT) {
-
   if ($repository = github_deploy_git_init_object($path)) {
     // Repository exist.
     if ($repository->test_git()) {

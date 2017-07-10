@@ -17,7 +17,6 @@ function github_deploy_admin_settings() {
     '#type' => 'fieldset',
     '#title' => t('Github deploy settings'),
     '#collapsible' => FALSE,
-    '#weight' => 2,
   );
 
   $form['github_deploy']['github_deploy_admin_settings_git_path'] = array(
@@ -57,7 +56,7 @@ function github_deploy_admin_settings() {
   // Get active branch name.
   $active_branch = github_deploy_git_get_active_branch();
   $form['github_deploy']['repository'] = array(
-    '#markup' => t('Your current branch is <strong>@branch</strong>', array(
+    '#markup' => t('Your current branch is <strong>@branch</strong>.', array(
       '@branch' => $active_branch,
     )),
   );
