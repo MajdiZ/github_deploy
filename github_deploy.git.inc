@@ -126,7 +126,6 @@ function github_deploy_git_execute_pull_deploy($origin, $path = DRUPAL_ROOT) {
  *    TRUE if check completed otherwise FALSE.
  */
 function github_deploy_git_check_setup($path = DRUPAL_ROOT) {
-
   if ($repository = github_deploy_git_init_object($path)) {
     // Repository exist.
     if ($repository->test_git()) {
@@ -135,6 +134,8 @@ function github_deploy_git_check_setup($path = DRUPAL_ROOT) {
         // Active branch found.
         if (github_deploy_git_get_origins_name($path)) {
           // Origin found.
+          // Let's clean up the messages.
+          drupal_get_messages('warning');
           return TRUE;
         }
         else {

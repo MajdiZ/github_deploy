@@ -16,7 +16,7 @@ function github_deploy_requirements($phase) {
         $requirements['github_deploy'] = array(
           'title' => $t('Git.php library'),
           'value' => $t('Installed'),
-          'description' => $t('The Git.php library installed'),
+          'description' => $t('The Git.php library installed.'),
           'severity' => REQUIREMENT_OK,
         );
       }
