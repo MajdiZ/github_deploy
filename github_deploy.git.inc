@@ -111,7 +111,7 @@ function github_deploy_git_execute_pull_deploy($origin, $path = DRUPAL_ROOT) {
     foreach ($commands as $command_name => $command) {
       $result[$command_name] = $repository->run($command);
     }
-    // Rescuer settings file.
+    // Re-secure settings file.
     drupal_chmod(conf_path(0555));
 
     return $result;
