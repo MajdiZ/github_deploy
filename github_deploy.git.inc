@@ -105,10 +105,15 @@ function github_deploy_git_execute_pull_deploy($origin, $path = DRUPAL_ROOT) {
 
   if ($repository = github_deploy_git_init_object($path)) {
     $repository = Git::open($path);
+    // Change permission for settings.php.
+    drupal_chmod(conf_path());
 
     foreach ($commands as $command_name => $command) {
       $result[$command_name] = $repository->run($command);
     }
+    // Re-secure settings file.
+    drupal_chmod(conf_path(0555));
+
     return $result;
   }
   else {
