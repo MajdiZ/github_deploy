@@ -21,7 +21,7 @@ function github_deploy_menu() {
     'page callback' => 'github_deploy_callback_pull',
     'type' => MENU_CALLBACK,
     'access callback' => 'github_deploy_access_callback_pull',
-    'file' => 'github_deploy.pages.inc',
+    'file' => 'includes/github_deploy.pages.inc',
   );
 
   $items[GITHUB_DEPLOY_ADMIN_MENU_PATH] = array(
@@ -31,7 +31,7 @@ function github_deploy_menu() {
     'page arguments' => array('github_deploy_admin_settings'),
     'access arguments' => array('administer github deploy'),
     'type' => MENU_NORMAL_ITEM,
-    'file' => 'github_deploy.admin.inc',
+    'file' => 'includes/github_deploy.admin.inc',
   );
 
   return $items;
@@ -52,7 +52,7 @@ function github_deploy_access_callback_pull() {
   if ($access_method == 'secret_token' || $access_method == 'both_methods') {
     $secret = variable_get('github_deploy_admin_settings_secret');
 
-    // Be sure security token is set in github
+    // Be sure security token is set in github.
     if (!empty($_SERVER['HTTP_X_HUB_SIGNATURE'])) {
       list($hash_algo, $signature) = explode('=', $_SERVER['HTTP_X_HUB_SIGNATURE']);
       $payload = file_get_contents('php://input');
