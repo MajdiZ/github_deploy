@@ -10,7 +10,7 @@
  */
 function github_deploy_callback_pull() {
   // Load library wrapper.
-  module_load_include('inc', 'github_deploy', 'github_deploy.git');
+  module_load_include('inc', 'github_deploy', 'includes/github_deploy.git');
 
   // Hook for deployment process before start.
   module_invoke_all('github_deploy_deployment_start');

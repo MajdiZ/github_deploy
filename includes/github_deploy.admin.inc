@@ -46,7 +46,7 @@ function github_deploy_admin_settings() {
   }
 
   // Load library wrapper.
-  module_load_include('inc', 'github_deploy', 'github_deploy.git');
+  module_load_include('inc', 'github_deploy', 'includes/github_deploy.git');
 
 
   if (!github_deploy_git_check_setup()) {
@@ -81,7 +81,7 @@ function github_deploy_admin_settings() {
     '#description' => t('Method to secure Github deploy callback.'),
     '#options' => array(
       'secret_token' => t('Secret token'),
-      'whitelist_githubs_ip' => t('Whitelist GitHub\'s IP'),
+      'whitelist_githubs_ip' => t("Whitelist GitHub's IP"),
       'both_methods' => t('Both methods'),
     ),
     '#default_value' => variable_get('github_deploy_admin_settings_secure_method'),
