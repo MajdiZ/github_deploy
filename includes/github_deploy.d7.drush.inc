@@ -32,6 +32,7 @@ function github_deploy_drush_command() {
 
   return $items;
 }
+
 /**
  * Implements drush_hook_COMMAND().
  */
