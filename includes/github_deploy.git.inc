@@ -12,10 +12,10 @@ libraries_load('gitphp');
  * Initialize repository object.
  *
  * @param string $path
- *    Root of repository, default is DRUPAL_ROOT.
+ *   Root of repository, default is DRUPAL_ROOT.
  *
  * @return bool|object
- *    return FALSE on failure or repository object.
+ *   return FALSE on failure or repository object.
  */
 function github_deploy_git_init_object($path = DRUPAL_ROOT) {
   $bin_path = variable_get('github_deploy_admin_settings_git_path', GITHUB_DEPLOY_DEFAULT_GIT_PATH);
@@ -35,12 +35,12 @@ function github_deploy_git_init_object($path = DRUPAL_ROOT) {
  * Return current active branch name.
  *
  * @param string $path
- *    repository path, default is DRUPAL_ROOT.
+ *   repository path, default is DRUPAL_ROOT.
  * @param bool $keep_asterisk
- *    Flag for keeping * on active branch name or remove it, default is FALSE.
+ *   Flag for keeping * on active branch name or remove it, default is FALSE.
  *
  * @return bool|string
- *    False or active branch name.
+ *   False or active branch name.
  */
 function github_deploy_git_get_active_branch($path = DRUPAL_ROOT, $keep_asterisk = FALSE) {
   if ($repository = github_deploy_git_init_object($path)) {
@@ -53,10 +53,10 @@ function github_deploy_git_get_active_branch($path = DRUPAL_ROOT, $keep_asterisk
  * Return list of origin name and urls.
  *
  * @param string $path
- *     repository path, default is DRUPAL_ROOT.
+ *   repository path, default is DRUPAL_ROOT.
  *
  * @return array|bool
- *    Array of origins => names, or FALSE.
+ *   Array of origins => names, or FALSE.
  */
 function github_deploy_git_get_origins_name($path = DRUPAL_ROOT) {
   $origins = array();
@@ -88,12 +88,12 @@ function github_deploy_git_get_origins_name($path = DRUPAL_ROOT) {
  * Execute Pull deploy action.
  *
  * @param string $origin
- *    Origin name.
+ *   Origin name.
  * @param string $path
- *    repository path, default is DRUPAL_ROOT.
+ *   repository path, default is DRUPAL_ROOT.
  *
  * @return array|bool
- *    array of command => result or FALSE on error.
+ *   array of command => result or FALSE on error.
  */
 function github_deploy_git_execute_pull_deploy($origin, $path = DRUPAL_ROOT) {
   $result = array();
@@ -125,10 +125,10 @@ function github_deploy_git_execute_pull_deploy($origin, $path = DRUPAL_ROOT) {
  * Check setup status.
  *
  * @param string $path
- *    repository path, default is DRUPAL_ROOT.
+ *   repository path, default is DRUPAL_ROOT.
  *
  * @return bool
- *    TRUE if check completed otherwise FALSE.
+ *   TRUE if check completed otherwise FALSE.
  */
 function github_deploy_git_check_setup($path = DRUPAL_ROOT) {
   if ($repository = github_deploy_git_init_object($path)) {

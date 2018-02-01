@@ -41,7 +41,7 @@ function github_deploy_menu() {
  * Access callback to validate github callback.
  *
  * @return bool
- *    TRUE if secret match otherwise FALSE.
+ *   TRUE if secret match otherwise FALSE.
  */
 function github_deploy_access_callback_pull() {
   $access_secret_token = FALSE;

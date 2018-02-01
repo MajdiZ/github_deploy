@@ -9,7 +9,7 @@
  * Admin settings form.
  *
  * @return mixed
- *    Admin settings form.
+ *   Admin settings form.
  */
 function github_deploy_admin_settings() {
   $form = array();
@@ -41,13 +41,11 @@ function github_deploy_admin_settings() {
       '#weight' => 0,
     );
 
-
     return $form;
   }
 
   // Load library wrapper.
   module_load_include('inc', 'github_deploy', 'includes/github_deploy.git');
-
 
   if (!github_deploy_git_check_setup()) {
     return system_settings_form($form);
@@ -73,7 +71,6 @@ function github_deploy_admin_settings() {
       '#required' => TRUE,
     );
   }
-
 
   $form['github_deploy']['github_deploy_admin_settings_secure_method'] = array(
     '#type' => 'select',

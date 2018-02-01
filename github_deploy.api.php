@@ -16,7 +16,7 @@ function hook_github_deploy_deployment_start() {
  * Runs after deployment process completed successfully.
  *
  * @param string $result
- *    Result of execution.
+ *   Result of execution.
  */
 function hook_github_deploy_deployment_completed($result) {
 
